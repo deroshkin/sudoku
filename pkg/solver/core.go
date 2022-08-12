@@ -54,6 +54,7 @@ func (sol *Solver) Solve() bool {
 		return false
 	}
 	for true {
+		changed := false
 		ch1 := sol.RestrictCands()
 		ch2 := sol.NakedSingles()
 		if ch1 || ch2 {
@@ -67,14 +68,12 @@ func (sol *Solver) Solve() bool {
 		}
 		for _, strat := range sol.Strats {
 			if strat(sol.Cands) {
-				if !sol.IsLegal() || !sol.EnoughCands() {
-					return false
-				} else if sol.IsSolved() {
-					return true
-				} else {
-					continue
-				}
+				changed = true
+				break
 			}
+		}
+		if changed {
+			continue
 		}
 		break
 	}
