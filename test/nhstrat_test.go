@@ -145,7 +145,7 @@ func TestNakedPairs(t *testing.T) {
 		t.Fatalf("Expected to have candidates 1 & 2 in r3c3, got %v instead", sol1.Cands[2][1])
 	}
 	for i := 3; i < 9; i++ {
-		if slices.Contains(sol1.Cands[2][i], 1) || slices.Contains(sol1.Cands[2][i], 1) {
+		if slices.Contains(sol1.Cands[2][i], 1) || slices.Contains(sol1.Cands[2][i], 2) {
 			t.Fatalf("Naked pair candidates in r3c%v not removed, have %v", i+1, sol1.Cands[2][i])
 		}
 	}
