@@ -1,0 +1,14 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_test")
+
+go_test(
+    name = "test_test",
+    srcs = [
+        "nhstrat_test.go",
+        "solver_test.go",
+    ],
+    deps = [
+        "//pkg/nhstrats",
+        "//pkg/solver",
+        "@org_golang_x_exp//slices",
+    ],
+)

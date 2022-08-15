@@ -1,0 +1,16 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "nhstrats",
+    srcs = [
+        "hidden_singles.go",
+        "ktuple_handler.go",
+        "naked.go",
+    ],
+    importpath = "github.com/deroshkin/sudoku/pkg/nhstrats",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//pkg/solver",
+        "@org_golang_x_exp//slices",
+    ],
+)
