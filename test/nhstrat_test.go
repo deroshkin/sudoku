@@ -219,3 +219,145 @@ func TestNakedPairs(t *testing.T) {
 		t.Fatalf("Board %v should not have naked pairs, but the program somehow found 1", board4)
 	}
 }
+
+func TestNakedTriples(t *testing.T) {
+	board1 := [][]uint8{{3, 4, 5, 0, 0, 0, 0, 0, 0},
+		{6, 7, 8, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	sol1 := solver.MakeSolver(board1, []solver.Strategy{})
+	sol1.RestrictCands()
+	if !nhstrats.NakedTriples(sol1.Cands) {
+		t.Fatalf("Board %v should have a naked triple (129) in row 3, but none found", board1)
+	}
+	if !slices.Equal(sol1.Cands[2][0], []uint8{1, 2, 9}) {
+		t.Fatalf("Expected to have candidates 1, 2 & 9 in r3c1, got %v instead", sol1.Cands[2][1])
+	}
+	if !slices.Equal(sol1.Cands[2][1], []uint8{1, 2, 9}) {
+		t.Fatalf("Expected to have candidates 1, 2 & 9 in r3c2, got %v instead", sol1.Cands[2][1])
+	}
+	if !slices.Equal(sol1.Cands[2][2], []uint8{1, 2, 9}) {
+		t.Fatalf("Expected to have candidates 1, 2 &9 in r3c3, got %v instead", sol1.Cands[2][1])
+	}
+	for i := 3; i < 9; i++ {
+		if slices.Contains(sol1.Cands[2][i], 1) || slices.Contains(sol1.Cands[2][i], 2) || slices.Contains(sol1.Cands[2][i], 9) {
+			t.Fatalf("Naked triple candidates in r3c%v not removed, have %v", i+1, sol1.Cands[2][i])
+		}
+	}
+
+	board2 := [][]uint8{{5, 3, 2, 1, 0, 7, 9, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 9, 0, 1, 0, 0, 0},
+		{0, 0, 0, 0, 3, 2, 0, 0, 0},
+		{0, 0, 0, 7, 0, 5, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	sol2 := solver.MakeSolver(board2, []solver.Strategy{})
+	sol2.RestrictCands()
+	if !nhstrats.NakedTriples(sol2.Cands) {
+		t.Fatalf("Board %v should have a naked triple (468) in column 5, but none found", board2)
+	}
+	if !slices.Equal(sol2.Cands[0][4], []uint8{4, 6, 8}) {
+		t.Fatalf("Expected to have candidates 4, 6 & 8 in r1c5, got %v instead", sol2.Cands[0][4])
+	}
+	if !slices.Equal(sol2.Cands[3][4], []uint8{4, 6, 8}) {
+		t.Fatalf("Expected to have candidates 4, 6 & 8 in r4c5, got %v instead", sol2.Cands[3][4])
+	}
+	if !slices.Equal(sol2.Cands[5][4], []uint8{4, 6, 8}) {
+		t.Fatalf("Expected to have candidates 4, 6 & 8 in r6c5, got %v instead", sol2.Cands[5][4])
+	}
+	for i := 1; i < 3; i++ {
+		if slices.Contains(sol2.Cands[i][4], 4) || slices.Contains(sol2.Cands[i][4], 6) || slices.Contains(sol2.Cands[i][4], 8) {
+			t.Fatalf("Naked triple candidates in r%vc5 not removed, have %v", i+1, sol2.Cands[i][4])
+		}
+	}
+	for i := 6; i < 9; i++ {
+		if slices.Contains(sol2.Cands[i][4], 4) || slices.Contains(sol2.Cands[i][4], 6) || slices.Contains(sol2.Cands[i][4], 8) {
+			t.Fatalf("Naked triple candidates in r%vc5 not removed, have %v", i+1, sol2.Cands[i][4])
+		}
+	}
+
+	board3 := [][]uint8{{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{1, 2, 3, 4, 5, 6, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	sol3 := solver.MakeSolver(board3, []solver.Strategy{})
+	sol3.RestrictCands()
+	if !nhstrats.NakedTriples(sol3.Cands) {
+		t.Fatalf("Board %v has a naked triple (789) in box 9, but it was not detected", board3)
+	}
+	if !slices.Equal(sol3.Cands[6][6], []uint8{7, 8, 9}) {
+		t.Fatalf("Expected to have candidates 7, 8 & 9 in r7c8, got %v instead", sol3.Cands[6][7])
+	}
+	if !slices.Equal(sol3.Cands[6][7], []uint8{7, 8, 9}) {
+		t.Fatalf("Expected to have candidates 7, 8 & 9 in r7c8, got %v instead", sol3.Cands[6][7])
+	}
+	if !slices.Equal(sol3.Cands[6][8], []uint8{7, 8, 9}) {
+		t.Fatalf("Expected to have candidates 7, 8 & 9 in r7c9, got %v instead", sol3.Cands[6][8])
+	}
+	for i := 7; i < 9; i++ {
+		for j := 6; j < 9; j++ {
+			if slices.Contains(sol3.Cands[i][j], 7) || slices.Contains(sol3.Cands[i][j], 8) || slices.Contains(sol3.Cands[i][j], 9) {
+				t.Fatalf("Naked triple candidates in r%vc%v not removed, have %v", i+1, j+1, sol3.Cands[2][i])
+			}
+		}
+	}
+
+	board4 := [][]uint8{{0, 0, 0, 0, 0, 0, 0, 8, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 9},
+		{0, 0, 0, 0, 0, 0, 7, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{1, 2, 3, 4, 5, 6, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	sol4 := solver.MakeSolver(board4, []solver.Strategy{})
+	sol4.RestrictCands()
+	if !nhstrats.NakedTriples(sol4.Cands) {
+		t.Fatalf("Board %v has a naked triple (789) in box 9, but it was not detected", board4)
+	}
+	if !slices.Equal(sol4.Cands[6][6], []uint8{8, 9}) {
+		t.Fatalf("Expected to have candidates 8 & 9 in r7c8, got %v instead", sol4.Cands[6][7])
+	}
+	if !slices.Equal(sol4.Cands[6][7], []uint8{7, 9}) {
+		t.Fatalf("Expected to have candidates 7 & 9 in r7c8, got %v instead", sol4.Cands[6][7])
+	}
+	if !slices.Equal(sol4.Cands[6][8], []uint8{7, 8}) {
+		t.Fatalf("Expected to have candidates 7 & 8 in r7c9, got %v instead", sol4.Cands[6][8])
+	}
+	for i := 7; i < 9; i++ {
+		for j := 6; j < 9; j++ {
+			if slices.Contains(sol4.Cands[i][j], 7) || slices.Contains(sol4.Cands[i][j], 8) || slices.Contains(sol4.Cands[i][j], 9) {
+				t.Fatalf("Naked triple candidates in r%vc%v not removed, have %v", i+1, j+1, sol4.Cands[2][i])
+			}
+		}
+	}
+
+	board5 := [][]uint8{{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{1, 2, 0, 4, 5, 6, 0, 0, 9},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	sol5 := solver.MakeSolver(board5, []solver.Strategy{})
+	sol5.RestrictCands()
+	if nhstrats.NakedTriples(sol5.Cands) {
+		t.Fatalf("Board %v should have no naked triples, but one was detected", board5)
+	}
+}

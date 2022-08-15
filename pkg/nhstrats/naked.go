@@ -9,8 +9,8 @@ func NakedPairs(cands [][][]uint8) (changed bool) {
 	return nakedRowkTuples(cands, 2) || nakedColkTuples(cands, 2) || nakedBoxkTuples(cands, 2)
 }
 
-func Hiddenpairs(cands [][][]uint8) (changed bool) {
-	return false
+func NakedTriples(cands [][][]uint8) (changed bool) {
+	return nakedRowkTuples(cands, 3) || nakedColkTuples(cands, 3) || nakedBoxkTuples(cands, 3)
 }
 
 // Find naked k-tuples in rows, returns whether any changes are made
@@ -22,10 +22,18 @@ func nakedRowkTuples(cands [][][]uint8, k int) (changed bool) {
 		}
 		vals = restrict(vals, k)
 		matches := findMatches(vals, k, 1)
-		for _, set := range matches {
+		for _, set_cells := range matches {
+			set := make([]uint8, 9)
+			for _, j := range set_cells {
+				for _, v := range cands[i][j] {
+					if !slices.Contains(set, v) {
+						set = append(set, v)
+					}
+				}
+			}
 			for j := uint8(0); j < 9; j++ {
-				if !slices.Contains(set, j) {
-					for _, v := range cands[i][set[0]] {
+				if !slices.Contains(set_cells, j) {
+					for _, v := range set {
 						if solver.RemoveCand(cands, int(i), int(j), v) {
 							changed = true
 						}
@@ -49,10 +57,18 @@ func nakedColkTuples(cands [][][]uint8, k int) (changed bool) {
 		}
 		vals = restrict(vals, k)
 		matches := findMatches(vals, k, 1)
-		for _, set := range matches {
+		for _, set_cells := range matches {
+			set := make([]uint8, 9)
+			for _, j := range set_cells {
+				for _, v := range cands[j][i] {
+					if !slices.Contains(set, v) {
+						set = append(set, v)
+					}
+				}
+			}
 			for j := uint8(0); j < 9; j++ {
-				if !slices.Contains(set, j) {
-					for _, v := range cands[set[0]][i] {
+				if !slices.Contains(set_cells, j) {
+					for _, v := range set {
 						if solver.RemoveCand(cands, int(j), int(i), v) {
 							changed = true
 						}
@@ -76,10 +92,18 @@ func nakedBoxkTuples(cands [][][]uint8, k int) (changed bool) {
 		}
 		vals = restrict(vals, k)
 		matches := findMatches(vals, k, 1)
-		for _, set := range matches {
+		for _, set_cells := range matches {
+			set := make([]uint8, 9)
+			for _, j := range set_cells {
+				for _, v := range cands[3*(i/3)+(j/3)][3*(i%3)+(j%3)] {
+					if !slices.Contains(set, v) {
+						set = append(set, v)
+					}
+				}
+			}
 			for j := uint8(0); j < 9; j++ {
-				if !slices.Contains(set, j) {
-					for _, v := range cands[3*(i/3)+(set[0]/3)][3*(i%3)+(set[0]%3)] {
+				if !slices.Contains(set_cells, j) {
+					for _, v := range set {
 						if solver.RemoveCand(cands, int(3*(i/3)+(j/3)), int(3*(i%3)+(j%3)), v) {
 							changed = true
 						}
