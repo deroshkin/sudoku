@@ -361,3 +361,36 @@ func TestNakedTriples(t *testing.T) {
 		t.Fatalf("Board %v should have no naked triples, but one was detected", board5)
 	}
 }
+
+func TestNakedPairsTriplesSolve(t *testing.T) {
+	board := [][]uint8{{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 1, 9, 0, 0, 5, 0, 0},
+		{5, 6, 0, 3, 1, 0, 0, 9, 0},
+		{1, 0, 0, 6, 0, 0, 0, 2, 8},
+		{0, 0, 4, 0, 0, 0, 7, 0, 0},
+		{2, 7, 0, 0, 0, 4, 0, 0, 3},
+		{0, 4, 0, 0, 6, 8, 0, 3, 5},
+		{0, 0, 2, 0, 0, 5, 9, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	sol := solver.MakeSolver(board, []solver.Strategy{nhstrats.HiddenSingles, nhstrats.NakedPairs, nhstrats.NakedTriples})
+	if !sol.Solve() {
+		t.Fatalf("Board %v should be solvable using hidden singles and naked pairs/triples, but got not solvable", board)
+	}
+	boardSolved := [][]uint8{{9, 2, 8, 5, 4, 7, 3, 1, 6},
+		{4, 3, 1, 9, 8, 6, 5, 7, 2},
+		{5, 6, 7, 3, 1, 2, 8, 9, 4},
+		{1, 9, 5, 6, 7, 3, 4, 2, 8},
+		{3, 8, 4, 2, 5, 1, 7, 6, 9},
+		{2, 7, 6, 8, 9, 4, 1, 5, 3},
+		{7, 4, 9, 1, 6, 8, 2, 3, 5},
+		{6, 1, 2, 4, 3, 5, 9, 8, 7},
+		{8, 5, 3, 7, 2, 9, 6, 4, 1}}
+	for i := 0; i < 9; i++ {
+		for j := 0; j < 9; j++ {
+			if sol.Board[i][j] != boardSolved[i][j] {
+				t.Fatalf("Incorrect solution, expected %v in r%vc%v, but got %v",
+					boardSolved[i][j], i+1, j+1, sol.Board[i][j])
+			}
+		}
+	}
+}
