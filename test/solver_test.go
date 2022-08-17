@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/deroshkin/sudoku/pkg/solver"
+	"github.com/deroshkin/sudoku/util"
 )
 
 func TestCandGen(t *testing.T) {
@@ -288,12 +289,18 @@ func TestSolve(t *testing.T) {
 		{5, 9, 7, 2, 3, 6, 1, 8, 4},
 		{4, 2, 6, 8, 1, 7, 9, 3, 5},
 		{8, 3, 1, 4, 5, 9, 2, 6, 0}}
-	sol1 := solver.MakeSolver(board1, []solver.Strategy{})
-	if !sol1.Solve() {
-		t.Fatalf("Board %v should be solvable with no strategies, but got not solvable", board1)
-	}
-	if sol1.Board[8][8] != 7 {
-		t.Fatalf("The solution to board %v should have 7 in r9c9, but got %v instead", board1, sol1.Board[8][8])
+	board1Solved := [][]uint8{{6, 7, 2, 1, 4, 5, 3, 9, 8},
+		{1, 4, 5, 9, 8, 3, 6, 7, 2},
+		{3, 8, 9, 7, 6, 2, 4, 5, 1},
+		{2, 6, 3, 5, 7, 4, 8, 1, 9},
+		{9, 5, 8, 6, 2, 1, 7, 4, 3},
+		{7, 1, 4, 3, 9, 8, 5, 2, 6},
+		{5, 9, 7, 2, 3, 6, 1, 8, 4},
+		{4, 2, 6, 8, 1, 7, 9, 3, 5},
+		{8, 3, 1, 4, 5, 9, 2, 6, 7}}
+	res1, msg1 := util.SolveTester(board1, board1Solved, []solver.Strategy{}, true)
+	if !res1 {
+		t.Fatalf(msg1)
 	}
 
 	board2 := [][]uint8{{2, 9, 0, 0, 0, 0, 7, 6, 0},
@@ -314,16 +321,9 @@ func TestSolve(t *testing.T) {
 		{8, 7, 3, 1, 4, 6, 5, 2, 9},
 		{4, 6, 2, 3, 5, 9, 8, 7, 1},
 		{1, 5, 9, 2, 7, 8, 3, 4, 6}}
-	sol2 := solver.MakeSolver(board2, []solver.Strategy{})
-	if !sol2.Solve() {
-		t.Fatalf("Board %v should be solvable with no strategies, but got not solvable", board2)
-	}
-	for i := 0; i < 9; i++ {
-		for j := 0; j < 9; j++ {
-			if sol2.Board[i][j] != board2Solved[i][j] {
-				t.Fatalf("The solution to board %v should have %v in r%vc%v, but got %v instead", board2, board2Solved[i][j], i+1, j+1, sol2.Board[i][j])
-			}
-		}
+	res2, msg2 := util.SolveTester(board2, board2Solved, []solver.Strategy{}, true)
+	if !res2 {
+		t.Fatalf(msg2)
 	}
 
 	board3 := [][]uint8{{0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -335,9 +335,9 @@ func TestSolve(t *testing.T) {
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
-	sol3 := solver.MakeSolver(board3, []solver.Strategy{})
-	if sol3.Solve() {
-		t.Fatalf("Board %v should be not solvable, but got solvable", board3)
+	res3, msg3 := util.SolveTester(board3, [][]uint8{}, []solver.Strategy{}, false)
+	if !res3 {
+		t.Fatalf(msg3)
 	}
 
 	board4 := [][]uint8{{0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -349,9 +349,9 @@ func TestSolve(t *testing.T) {
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
-	sol4 := solver.MakeSolver(board4, []solver.Strategy{})
-	if sol4.Solve() {
-		t.Fatalf("Board %v should be not solvable, but got solvable", board4)
+	res4, msg4 := util.SolveTester(board4, [][]uint8{}, []solver.Strategy{}, false)
+	if !res4 {
+		t.Fatalf(msg4)
 	}
 
 	board5 := [][]uint8{{1, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -363,8 +363,8 @@ func TestSolve(t *testing.T) {
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
-	sol5 := solver.MakeSolver(board5, []solver.Strategy{})
-	if sol5.Solve() {
-		t.Fatalf("Board %v should be not solvable, but got solvable", board5)
+	res5, msg5 := util.SolveTester(board5, [][]uint8{}, []solver.Strategy{}, false)
+	if !res5 {
+		t.Fatalf(msg5)
 	}
 }

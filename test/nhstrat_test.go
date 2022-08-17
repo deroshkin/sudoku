@@ -5,6 +5,7 @@ import (
 
 	"github.com/deroshkin/sudoku/pkg/nhstrats"
 	"github.com/deroshkin/sudoku/pkg/solver"
+	"github.com/deroshkin/sudoku/util"
 	"golang.org/x/exp/slices"
 )
 
@@ -97,13 +98,9 @@ func TestHiddenSinglesSolve(t *testing.T) {
 		{0, 0, 2, 0, 1, 0, 0, 0, 3},
 		{9, 0, 0, 0, 0, 0, 5, 0, 7},
 		{6, 7, 0, 4, 0, 0, 0, 0, 0}}
-	sol1a := solver.MakeSolver(board1, []solver.Strategy{})
-	if sol1a.Solve() {
-		t.Fatalf("Board %v should not be solvable without extra strategies", board1)
-	}
-	sol1b := solver.MakeSolver(board1, []solver.Strategy{nhstrats.HiddenSingles})
-	if !sol1b.Solve() {
-		t.Fatalf("Board %v should be solvable using only hidden singles", board1)
+	res1, msg1 := util.SolveTester(board1, [][]uint8{}, []solver.Strategy{}, false)
+	if !res1 {
+		t.Fatalf(msg1)
 	}
 	board1Solved := [][]uint8{{7, 3, 5, 1, 6, 4, 9, 2, 8},
 		{4, 2, 6, 9, 7, 8, 3, 1, 5},
@@ -114,12 +111,9 @@ func TestHiddenSinglesSolve(t *testing.T) {
 		{8, 5, 2, 6, 1, 7, 4, 9, 3},
 		{9, 1, 4, 8, 2, 3, 5, 6, 7},
 		{6, 7, 3, 4, 9, 5, 2, 8, 1}}
-	for i := 0; i < 9; i++ {
-		for j := 0; j < 9; j++ {
-			if sol1b.Board[i][j] != board1Solved[i][j] {
-				t.Fatalf("The solution to board %v is incorrect, r%vc%v should be %v, but got %v", board1, i+1, j+1, board1Solved[i][j], sol1b.Board[i][j])
-			}
-		}
+	res2, msg2 := util.SolveTester(board1, board1Solved, []solver.Strategy{nhstrats.HiddenSingles}, true)
+	if !res2 {
+		t.Fatalf(msg2)
 	}
 }
 
@@ -372,10 +366,6 @@ func TestNakedPairsTriplesSolve(t *testing.T) {
 		{0, 4, 0, 0, 6, 8, 0, 3, 5},
 		{0, 0, 2, 0, 0, 5, 9, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
-	sol := solver.MakeSolver(board, []solver.Strategy{nhstrats.HiddenSingles, nhstrats.NakedPairs, nhstrats.NakedTriples})
-	if !sol.Solve() {
-		t.Fatalf("Board %v should be solvable using hidden singles and naked pairs/triples, but got not solvable", board)
-	}
 	boardSolved := [][]uint8{{9, 2, 8, 5, 4, 7, 3, 1, 6},
 		{4, 3, 1, 9, 8, 6, 5, 7, 2},
 		{5, 6, 7, 3, 1, 2, 8, 9, 4},
@@ -385,12 +375,8 @@ func TestNakedPairsTriplesSolve(t *testing.T) {
 		{7, 4, 9, 1, 6, 8, 2, 3, 5},
 		{6, 1, 2, 4, 3, 5, 9, 8, 7},
 		{8, 5, 3, 7, 2, 9, 6, 4, 1}}
-	for i := 0; i < 9; i++ {
-		for j := 0; j < 9; j++ {
-			if sol.Board[i][j] != boardSolved[i][j] {
-				t.Fatalf("Incorrect solution, expected %v in r%vc%v, but got %v",
-					boardSolved[i][j], i+1, j+1, sol.Board[i][j])
-			}
-		}
+	res, msg := util.SolveTester(board, boardSolved, []solver.Strategy{nhstrats.HiddenSingles, nhstrats.NakedPairs, nhstrats.NakedTriples}, true)
+	if !res {
+		t.Fatalf(msg)
 	}
 }
