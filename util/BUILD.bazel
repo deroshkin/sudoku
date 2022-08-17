@@ -1,0 +1,12 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "util",
+    srcs = ["test_util.go"],
+    importpath = "github.com/deroshkin/sudoku/util",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//pkg/solver",
+        "@org_golang_x_exp//slices",
+    ],
+)
