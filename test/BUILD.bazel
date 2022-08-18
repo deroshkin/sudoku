@@ -10,6 +10,5 @@ go_test(
         "//pkg/nhstrats",
         "//pkg/solver",
         "//util",
-        "@org_golang_x_exp//slices",
     ],
 )
