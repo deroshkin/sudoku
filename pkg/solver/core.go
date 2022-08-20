@@ -1,6 +1,6 @@
 package solver
 
-// Remove candidates that see a copy of the digit in the same row/column/box,
+// RestrictCands removes candidates that see a copy of the digit in the same row/column/box,
 // returns whether anything has been changed.
 func (sol *Solver) RestrictCands() (change bool) {
 	change = false
@@ -28,7 +28,7 @@ func (sol *Solver) RestrictCands() (change bool) {
 	return
 }
 
-// Search for naked singles and move any that are found to the board,
+// NakedSingles searches for naked singles and moves any that are found to the board,
 // returns whether anything has been changed.
 // Note: A naked single is the term for sudoku cells where there is exactly one
 // candidate value remaining.
@@ -45,7 +45,7 @@ func (sol *Solver) NakedSingles() (change bool) {
 	return
 }
 
-// The main method of the solver package. This method iterates over all
+// Solve is the main method of the solver package. This method iterates over all
 // the provided strategies and returns true if the sudoku is uniquely solvable
 // using those strategies, false otherwise. The solution can be accessed via
 // sol.Board.

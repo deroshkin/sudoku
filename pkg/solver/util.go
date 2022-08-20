@@ -13,7 +13,7 @@ type Strategy func([][][]uint8) bool
 
 // Solver is the primary type for all functions.
 // It consists of a collection of strategies to be used,
-// the current fixed-state board (0=empty) and a list of candidates.
+// the current fixed-state board (0=empty) and a list ofboard candidates.
 // The strategies will be called one at a time until one changes something,
 // then the solver will start from the beginning.
 type Solver struct {
@@ -22,7 +22,7 @@ type Solver struct {
 	Cands  [][][]uint8
 }
 
-// Take a board (0s used for empty cells) and a list of strategies and create
+// MakeSolver takes a board (0s used for empty cells) and a list of strategies and creates
 // a new solver.
 func MakeSolver(board [][]uint8, strats []Strategy) *Solver {
 	cands := makeCandidates(board)
@@ -62,7 +62,7 @@ func makeCandidates(board [][]uint8) [][][]uint8 {
 	return cands
 }
 
-// Check the legality of the current board state of a solver,
+// IsLegal checks the legality of the current board state of a solver,
 // only verifies that no two copies of the same digit see each other.
 func (sol *Solver) IsLegal() bool {
 	for i := 0; i < 9; i++ {
@@ -90,7 +90,7 @@ func (sol *Solver) IsLegal() bool {
 	return true
 }
 
-// Remove the given value from the list of candidates for a given cell,
+// RemoveCand removes the given value from the list of candidates for a given cell,
 // can be used even if the value is not a candidate.
 func RemoveCand(cands [][][]uint8, i, j int, val uint8) (change bool) {
 	change = false
@@ -103,7 +103,7 @@ func RemoveCand(cands [][][]uint8, i, j int, val uint8) (change bool) {
 	return
 }
 
-// Check to make sure that there is at least one copy of each digit available in
+// EnoughCands checks to make sure that there is at least one copy of each digit available in
 // the list of candidates for each row/column/box.
 func (sol *Solver) EnoughCands() bool {
 	for i := 0; i < 9; i++ {
@@ -129,7 +129,7 @@ func (sol *Solver) EnoughCands() bool {
 	return true
 }
 
-// Check whether the sudoku is solved (assumes that the board is in a legal state)
+// IsSolved checks whether the sudoku is solved (assumes that the board is in a legal state)
 func (sol *Solver) IsSolved() bool {
 	for i := 0; i < 9; i++ {
 		for j := 0; j < 9; j++ {

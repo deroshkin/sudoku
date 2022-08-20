@@ -1,8 +1,8 @@
-// The nhstrats package provides strategies for naked/hidden doubles-quads and
+// Package nhstrats provides strategies for naked/hidden doubles-quads and
 // hidden singles (naked singles are handles by the solver package)
 package nhstrats
 
-// Find the hidden singles in the provided sudoku candidates.
+// HiddenSingles finds the hidden singles in the provided sudoku candidates.
 // The first time one is found, change the candidates and return true,
 // if none are found, return false.
 // Note: hidden singles are the digits that can only appear in one spot in a row/column/box

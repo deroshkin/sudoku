@@ -1,4 +1,4 @@
-// The nhstrats package provides strategies for naked/hidden doubles-quads and
+// Package nhstrats provides strategies for naked/hidden doubles-quads and
 // hidden singles (naked singles are handles by the solver package)
 package nhstrats
 
