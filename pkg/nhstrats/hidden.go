@@ -12,6 +12,14 @@ func HiddenPairs(cands [][][]uint8) (changed bool) {
 	return hiddenRowkTuple(cands, 2) || hiddenColkTuple(cands, 2) || hiddenBoxkTuple(cands, 2)
 }
 
+// HiddenTriples is a strategy that searches for hidden triples in rows, columns and boxes (in that order).
+// As soon as one is found, returns true. If none are found, returns false.
+// Note: A hidden triple occurs when three values are restricted to (a subset of) the same 3 cells in
+// a row, column, or box.
+func HiddenTriples(cands [][][]uint8) (changed bool) {
+	return hiddenRowkTuple(cands, 3) || hiddenColkTuple(cands, 3) || hiddenBoxkTuple(cands, 3)
+}
+
 // hiddenRowkTuple finds naked k-tuples in rows, returns whether any changes are made
 func hiddenRowkTuple(cands [][][]uint8, k int) (changed bool) {
 	for i := uint8(0); i < 9; i++ {

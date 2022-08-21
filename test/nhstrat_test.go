@@ -509,3 +509,127 @@ func TestHiddenPairs(t *testing.T) {
 		t.Fatalf(msg4)
 	}
 }
+
+func TestHiddenTriples(t *testing.T) {
+	board1 := [][]uint8{{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{1, 4, 6, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 6, 4, 1},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	res1, msg1 := util.CandTester(board1, nhstrats.HiddenTriples, true,
+		map[util.Cell][]uint8{{R: 4, C: 3}: {1, 4, 6}, {R: 4, C: 4}: {1, 4, 6},
+			{R: 4, C: 5}: {1, 4, 6}},
+		map[util.Cell][]uint8{},
+		map[util.Cell][]uint8{},
+	)
+	if !res1 {
+		t.Fatalf(msg1)
+	}
+
+	board2 := [][]uint8{{4, 0, 0, 0, 0, 0, 0, 0, 0},
+		{7, 0, 0, 0, 0, 0, 0, 0, 0},
+		{8, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 4, 7, 8},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 4, 7, 8, 0, 0, 0},
+		{0, 0, 1, 0, 0, 0, 0, 0, 0}}
+	res2, msg2 := util.CandTester(board2, nhstrats.HiddenTriples, true,
+		map[util.Cell][]uint8{{R: 3, C: 2}: {4, 7, 8}, {R: 4, C: 2}: {4, 7, 8},
+			{R: 6, C: 2}: {4, 7, 8}},
+		map[util.Cell][]uint8{},
+		map[util.Cell][]uint8{},
+	)
+	if !res2 {
+		t.Fatalf(msg2)
+	}
+
+	board3 := [][]uint8{{0, 0, 0, 0, 0, 2, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 4, 0, 0, 0, 0},
+		{2, 5, 0, 0, 0, 0, 0, 0, 9},
+		{0, 0, 0, 0, 0, 5, 0, 0, 0},
+		{0, 0, 0, 0, 0, 9, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	res3, msg3 := util.CandTester(board3, nhstrats.HiddenTriples, true,
+		map[util.Cell][]uint8{{R: 3, C: 3}: {2, 5, 9}, {R: 3, C: 4}: {2, 5, 9},
+			{R: 4, C: 3}: {2, 5, 9}},
+		map[util.Cell][]uint8{},
+		map[util.Cell][]uint8{},
+	)
+	if !res3 {
+		t.Fatalf(msg3)
+	}
+
+	board4 := [][]uint8{{0, 0, 0, 0, 0, 2, 0, 0, 0},
+		{0, 0, 0, 0, 5, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{9, 0, 0, 0, 4, 0, 0, 0, 0},
+		{2, 5, 0, 0, 0, 0, 0, 0, 9},
+		{0, 0, 0, 0, 0, 5, 0, 0, 0},
+		{0, 0, 0, 0, 0, 9, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	res4, msg4 := util.CandTester(board4, nhstrats.HiddenTriples, true,
+		map[util.Cell][]uint8{{R: 3, C: 3}: {2, 5, 9}, {R: 3, C: 4}: {2, 9},
+			{R: 4, C: 3}: {2, 5}},
+		map[util.Cell][]uint8{},
+		map[util.Cell][]uint8{},
+	)
+	if !res4 {
+		t.Fatalf(msg4)
+	}
+
+	board5 := [][]uint8{{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	res5, msg5 := util.CandTester(board5, nhstrats.HiddenTriples, false,
+		map[util.Cell][]uint8{},
+		map[util.Cell][]uint8{},
+		map[util.Cell][]uint8{},
+	)
+	if !res5 {
+		t.Fatalf(msg5)
+	}
+}
+
+func TestHiddenTripleSolve(t *testing.T) {
+	board := [][]uint8{{3, 0, 0, 0, 0, 0, 0, 0, 0},
+		{9, 7, 0, 0, 1, 0, 0, 0, 0},
+		{6, 0, 0, 5, 8, 3, 0, 0, 0},
+		{2, 0, 0, 0, 0, 0, 9, 0, 0},
+		{5, 0, 0, 6, 2, 1, 0, 0, 3},
+		{0, 0, 8, 0, 0, 0, 0, 0, 5},
+		{0, 0, 0, 4, 3, 5, 0, 0, 2},
+		{0, 0, 0, 0, 9, 0, 0, 5, 6},
+		{0, 0, 0, 0, 0, 0, 0, 0, 1}}
+	answer := [][]uint8{{3, 8, 1, 9, 7, 6, 5, 2, 4},
+		{9, 7, 5, 2, 1, 4, 6, 3, 8},
+		{6, 4, 2, 5, 8, 3, 1, 7, 9},
+		{2, 6, 4, 3, 5, 8, 9, 1, 7},
+		{5, 9, 7, 6, 2, 1, 4, 8, 3},
+		{1, 3, 8, 7, 4, 9, 2, 6, 5},
+		{8, 1, 6, 4, 3, 5, 7, 9, 2},
+		{4, 2, 3, 1, 9, 7, 8, 5, 6},
+		{7, 5, 9, 8, 6, 2, 3, 4, 1}}
+	res, msg := util.SolveTester(board, answer,
+		[]solver.Strategy{nhstrats.HiddenSingles, nhstrats.NakedTriples, nhstrats.HiddenTriples},
+		true,
+	)
+	if !res {
+		t.Fatalf(msg)
+	}
+}
