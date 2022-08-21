@@ -2,6 +2,8 @@ package sudoku_test
 
 import (
 	"github.com/deroshkin/sudoku/pkg/interstrats"
+	"github.com/deroshkin/sudoku/pkg/nhstrats"
+	"github.com/deroshkin/sudoku/pkg/solver"
 	"github.com/deroshkin/sudoku/util"
 	"testing"
 )
@@ -104,6 +106,31 @@ func TestPointingSets(t *testing.T) {
 	)
 	if !res5 {
 		t.Fatalf(msg5)
+	}
+}
+
+func TestPointingSetSolve(t *testing.T) {
+	board := [][]uint8{{9, 3, 0, 0, 5, 0, 0, 0, 0},
+		{2, 0, 0, 6, 3, 0, 0, 9, 5},
+		{8, 5, 6, 0, 0, 2, 0, 0, 0},
+		{0, 0, 3, 1, 8, 0, 5, 7, 0},
+		{0, 0, 5, 0, 2, 0, 9, 8, 0},
+		{0, 8, 0, 0, 0, 5, 0, 0, 0},
+		{0, 0, 0, 8, 0, 0, 1, 5, 9},
+		{5, 0, 8, 2, 1, 0, 0, 0, 4},
+		{0, 0, 0, 5, 6, 0, 0, 0, 8}}
+	answer := [][]uint8{{9, 3, 1, 7, 5, 8, 2, 4, 6},
+		{2, 4, 7, 6, 3, 1, 8, 9, 5},
+		{8, 5, 6, 9, 4, 2, 3, 1, 7},
+		{4, 9, 3, 1, 8, 6, 5, 7, 2},
+		{1, 6, 5, 4, 2, 7, 9, 8, 3},
+		{7, 8, 2, 3, 9, 5, 4, 6, 1},
+		{6, 2, 4, 8, 7, 3, 1, 5, 9},
+		{5, 7, 8, 2, 1, 9, 6, 3, 4},
+		{3, 1, 9, 5, 6, 4, 7, 2, 8}}
+	res, msg := util.SolveTester(board, answer, []solver.Strategy{nhstrats.HiddenSingles, nhstrats.HiddenPairs, nhstrats.NakedTriples, interstrats.PointingSets}, true)
+	if !res {
+		t.Fatalf(msg)
 	}
 }
 
