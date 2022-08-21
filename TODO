@@ -1,0 +1,5 @@
+# List of planned additions
+
+* Add logging functionality to allow reading and debugging the solution process
+* Add UI (initially command-line, later GUI or web interface)
+* Add variant support
