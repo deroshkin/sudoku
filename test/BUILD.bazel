@@ -3,10 +3,12 @@ load("@io_bazel_rules_go//go:def.bzl", "go_test")
 go_test(
     name = "test_test",
     srcs = [
+        "interstrat_test.go",
         "nhstrat_test.go",
         "solver_test.go",
     ],
     deps = [
+        "//pkg/interstrats",
         "//pkg/nhstrats",
         "//pkg/solver",
         "//util",
