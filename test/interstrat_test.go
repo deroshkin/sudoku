@@ -106,3 +106,64 @@ func TestPointingSets(t *testing.T) {
 		t.Fatalf(msg5)
 	}
 }
+
+func TestBoxLineReduction(t *testing.T) {
+	// 1s in row 2 limited to box 1
+	board1 := [][]uint8{{0, 0, 0, 0, 0, 0, 1, 0, 0},
+		{0, 0, 0, 2, 3, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 1, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	res1, msg1 := util.CandTester(board1, interstrats.BoxLineReduction, true,
+		map[util.Cell][]uint8{},
+		map[util.Cell][]uint8{{R: 1, C: 0}: {1}, {R: 1, C: 1}: {1}, {R: 1, C: 2}: {1}},
+		map[util.Cell][]uint8{{R: 0, C: 0}: {1}, {R: 0, C: 1}: {1}, {R: 0, C: 2}: {1},
+			{R: 2, C: 0}: {1}, {R: 2, C: 1}: {1}, {R: 2, C: 2}: {1}},
+	)
+	if !res1 {
+		t.Fatalf(msg1)
+	}
+
+	// 3s in col 4 limited to box 5
+	board2 := [][]uint8{{0, 0, 0, 0, 0, 3, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{3, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 2, 0, 0, 0, 0, 0},
+		{0, 0, 0, 5, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 3, 0, 0}}
+	res2, msg2 := util.CandTester(board2, interstrats.BoxLineReduction, true,
+		map[util.Cell][]uint8{},
+		map[util.Cell][]uint8{{R: 3, C: 3}: {3}, {R: 4, C: 3}: {3}},
+		map[util.Cell][]uint8{{R: 3, C: 4}: {3}, {R: 3, C: 5}: {3}, {R: 4, C: 4}: {3},
+			{R: 4, C: 5}: {3}, {R: 5, C: 4}: {3}, {R: 5, C: 5}: {3}},
+	)
+	if !res2 {
+		t.Fatalf(msg2)
+	}
+
+	//Non-example
+	board3 := [][]uint8{{0, 1, 4, 0, 0, 0, 0, 0, 0},
+		{0, 2, 6, 0, 0, 0, 0, 0, 0},
+		{0, 5, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	res3, msg3 := util.CandTester(board3, interstrats.BoxLineReduction, false,
+		map[util.Cell][]uint8{},
+		map[util.Cell][]uint8{},
+		map[util.Cell][]uint8{},
+	)
+	if !res3 {
+		t.Fatalf(msg3)
+	}
+}
