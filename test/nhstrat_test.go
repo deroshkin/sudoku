@@ -633,3 +633,103 @@ func TestHiddenTripleSolve(t *testing.T) {
 		t.Fatalf(msg)
 	}
 }
+
+func TestHiddenQuads(t *testing.T) {
+	board1 := [][]uint8{{0, 0, 0, 0, 0, 0, 4, 0, 0},
+		{0, 0, 0, 0, 5, 6, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 1, 2, 3},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	res1, msg1 := util.CandTester(board1, nhstrats.HiddenQuads, true,
+		map[util.Cell][]uint8{{R: 1, C: 0}: {1, 2, 3, 4},
+			{R: 1, C: 1}: {1, 2, 3, 4}, {R: 1, C: 2}: {1, 2, 3, 4},
+			{R: 1, C: 3}: {1, 2, 3, 4}},
+		map[util.Cell][]uint8{},
+		map[util.Cell][]uint8{},
+	)
+	if !res1 {
+		t.Fatalf(msg1)
+	}
+
+	board2 := [][]uint8{{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 1, 0, 0, 0, 0},
+		{0, 0, 0, 0, 5, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 2, 0, 0, 0, 0, 0},
+		{0, 0, 0, 7, 0, 9, 0, 0, 0},
+		{0, 0, 0, 8, 0, 0, 0, 0, 0}}
+	res2, msg2 := util.CandTester(board2, nhstrats.HiddenQuads, true,
+		map[util.Cell][]uint8{{R: 0, C: 4}: {2, 7, 8, 9},
+			{R: 1, C: 4}: {2, 7, 8, 9}, {R: 4, C: 4}: {2, 7, 8, 9},
+			{R: 5, C: 4}: {2, 7, 8, 9}},
+		map[util.Cell][]uint8{},
+		map[util.Cell][]uint8{},
+	)
+	if !res2 {
+		t.Fatalf(msg2)
+	}
+
+	board3 := [][]uint8{{0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{0, 0, 0, 0, 0, 0, 0, 0, 4},
+		{0, 0, 0, 0, 0, 0, 0, 0, 5},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{1, 4, 0, 5, 6, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 6},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	res3, msg3 := util.CandTester(board3, nhstrats.HiddenQuads, true,
+		map[util.Cell][]uint8{{R: 3, C: 6}: {1, 4, 5, 6},
+			{R: 3, C: 7}: {1, 4, 5, 6}, {R: 5, C: 6}: {1, 4, 5, 6},
+			{R: 5, C: 7}: {1, 4, 5, 6}},
+		map[util.Cell][]uint8{},
+		map[util.Cell][]uint8{},
+	)
+	if !res3 {
+		t.Fatalf(msg3)
+	}
+
+	board4 := [][]uint8{{0, 0, 0, 0, 1, 0, 0, 2, 0},
+		{0, 0, 0, 0, 0, 0, 5, 0, 0},
+		{0, 0, 6, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 5, 0, 0, 2, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{1, 3, 0, 0, 2, 0, 0, 5, 0},
+		{2, 0, 0, 1, 3, 5, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 4, 0, 0, 0, 0, 0, 0}}
+	res4, msg4 := util.CandTester(board4, nhstrats.HiddenQuads, true,
+		map[util.Cell][]uint8{{R: 0, C: 2}: {3, 5},
+			{R: 1, C: 2}: {1, 2, 3}, {R: 4, C: 2}: {2, 5},
+			{R: 7, C: 2}: {1, 3, 5}},
+		map[util.Cell][]uint8{},
+		map[util.Cell][]uint8{},
+	)
+	if !res4 {
+		t.Fatalf(msg4)
+	}
+
+	board5 := [][]uint8{{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	res5, msg5 := util.CandTester(board5, nhstrats.HiddenQuads, false,
+		map[util.Cell][]uint8{},
+		map[util.Cell][]uint8{},
+		map[util.Cell][]uint8{},
+	)
+	if !res5 {
+		t.Fatalf(msg5)
+	}
+}
