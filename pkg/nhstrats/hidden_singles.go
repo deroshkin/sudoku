@@ -4,13 +4,13 @@ package nhstrats
 
 // HiddenSingles finds the hidden singles in the provided sudoku candidates.
 // The first time one is found, change the candidates and return true,
-// if none are found, return false.
-// Note: hidden singles are the digits that can only appear in one spot in a row/column/box
+// if none are found, return false. Order of priority is rows, then columns, then boxes.
+// Note: hidden singles are the digits that can only appear in one spot in a row/column/box.
 func HiddenSingles(cands [][][]uint8) (changed bool) {
 	return hiddenRowSingles(cands) || hiddenColSingles(cands) || hiddenBoxSingles(cands)
 }
 
-// Search for hidden singles in each row
+// hiddenRowSingles searches for hidden singles in each row
 func hiddenRowSingles(cands [][][]uint8) (changed bool) {
 	changed = false
 	for i := 0; i < 9; i++ {
@@ -32,7 +32,7 @@ func hiddenRowSingles(cands [][][]uint8) (changed bool) {
 	return
 }
 
-// Search fo hidden singles in each column
+// hiddenColSingles searches for hidden singles in each column
 func hiddenColSingles(cands [][][]uint8) (changed bool) {
 	changed = false
 	for i := 0; i < 9; i++ {
@@ -55,7 +55,7 @@ func hiddenColSingles(cands [][][]uint8) (changed bool) {
 	return
 }
 
-// Search for hidden singles in each box
+// hiddenBoxSingles searches for hidden singles in each box
 func hiddenBoxSingles(cands [][][]uint8) (changed bool) {
 	changed = false
 	for i := 0; i < 9; i++ {

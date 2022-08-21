@@ -4,7 +4,7 @@ package nhstrats
 
 import "golang.org/x/exp/slices"
 
-// Restrict a map {j: cands @ j} or {v: locs for v} to only those elements
+// restrict restricts a map {j: values at j} or {v: locations for v} to only those elements
 // that appear more than once and at most k<=4 times
 func restrict(vals map[uint8][]uint8, k int) (res map[uint8][]uint8) {
 	res = make(map[uint8][]uint8)
@@ -16,7 +16,7 @@ func restrict(vals map[uint8][]uint8, k int) (res map[uint8][]uint8) {
 	return
 }
 
-// In an already restricted map, find all sets of k<=4 matching entries and
+// findMatches finds all sets of k<=4 matching entries in an already restricted map and
 // return them, or return {} if no match found
 func findMatches(vals map[uint8][]uint8, k int, min int) (res [][]uint8) {
 	inverted := make(map[uint16][]uint8, 9)

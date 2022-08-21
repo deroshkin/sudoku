@@ -45,7 +45,7 @@ func MakeSolver(board [][]uint8, strats []Strategy) *Solver {
 	return &sol
 }
 
-// Initialize the candidates for each cell, 1-9 if the cell is empty
+// makeCandidates initializes the candidates for each cell, 1-9 if the cell is empty
 // and just the given value if the cell is already filled.
 func makeCandidates(board [][]uint8) [][][]uint8 {
 	cands := make([][][]uint8, 9)
