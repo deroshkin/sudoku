@@ -23,6 +23,15 @@ func NakedTriples(cands [][][]uint8) (changed bool) {
 	return nakedRowkTuples(cands, 3) || nakedColkTuples(cands, 3) || nakedBoxkTuples(cands, 3)
 }
 
+// NakedQuads is a strategy that searches for naked quadruples in rows, columns and boxes (in that order).
+// As soon as one is found, returns true. If none are found, returns false.
+// Note: A naked quadruple occurs when four cells that see each other can each have (some of) only four values,
+// which allows us to remove those three values from the rest of the row/column/box.
+// Similar to naked triples, the four cells need not have the same candidates.
+func NakedQuads(cands [][][]uint8) (changed bool) {
+	return nakedRowkTuples(cands, 4) || nakedColkTuples(cands, 4) || nakedBoxkTuples(cands, 4)
+}
+
 // nakedRowkTuples finds naked k-tuples in rows, returns whether any changes are made
 func nakedRowkTuples(cands [][][]uint8, k int) (changed bool) {
 	for i := uint8(0); i < 9; i++ {
