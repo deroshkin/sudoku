@@ -128,7 +128,11 @@ func TestPointingSetSolve(t *testing.T) {
 		{6, 2, 4, 8, 7, 3, 1, 5, 9},
 		{5, 7, 8, 2, 1, 9, 6, 3, 4},
 		{3, 1, 9, 5, 6, 4, 7, 2, 8}}
-	res, msg := util.SolveTester(board, answer, []solver.Strategy{nhstrats.HiddenSingles, nhstrats.HiddenPairs, nhstrats.NakedTriples, interstrats.PointingSets}, true)
+	res, msg := util.SolveTester(board, answer,
+		[]solver.Strategy{nhstrats.HiddenSingles, nhstrats.HiddenPairs,
+			nhstrats.NakedTriples, interstrats.PointingSets},
+		true,
+	)
 	if !res {
 		t.Fatalf(msg)
 	}
