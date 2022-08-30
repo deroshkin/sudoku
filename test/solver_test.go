@@ -1,6 +1,8 @@
 package sudoku_test
 
 import (
+	"io"
+	"log"
 	"testing"
 
 	"github.com/deroshkin/sudoku/pkg/solver"
@@ -18,7 +20,7 @@ func TestCandGen(t *testing.T) {
 		{4, 2, 6, 8, 1, 7, 9, 3, 5},
 		{8, 3, 1, 4, 5, 9, 2, 6, 0}}
 
-	sol := solver.MakeSolver(board, []solver.Strategy{})
+	sol := solver.MakeSolver(board, []solver.Strategy{}, log.New(io.Discard, "", 0))
 
 	if len(sol.Cands[8][8]) != 9 {
 		t.Fatalf("An empty cell should yield 9 candidates before restriction, got %v instead\n", len(sol.Cands[8][8]))
@@ -35,7 +37,7 @@ func TestIsLegal(t *testing.T) {
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
-	sol := solver.MakeSolver(board1, []solver.Strategy{})
+	sol := solver.MakeSolver(board1, []solver.Strategy{}, log.New(io.Discard, "", 0))
 	if !sol.IsLegal() {
 		t.Fatalf("Board %v is evaluated illegal, but is legal\n", board1)
 	}
@@ -49,7 +51,7 @@ func TestIsLegal(t *testing.T) {
 		{5, 9, 7, 2, 3, 6, 1, 8, 4},
 		{4, 2, 6, 8, 1, 7, 9, 3, 5},
 		{8, 3, 1, 4, 5, 9, 2, 6, 7}}
-	sol2 := solver.MakeSolver(board2, []solver.Strategy{})
+	sol2 := solver.MakeSolver(board2, []solver.Strategy{}, log.New(io.Discard, "", 0))
 	if !sol2.IsLegal() {
 		t.Fatalf("Board %v is evaluated illegal, but is legal\n", board2)
 	}
@@ -63,7 +65,7 @@ func TestIsLegal(t *testing.T) {
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
-	sol3 := solver.MakeSolver(board3, []solver.Strategy{})
+	sol3 := solver.MakeSolver(board3, []solver.Strategy{}, log.New(io.Discard, "", 0))
 	if sol3.IsLegal() {
 		t.Fatalf("Board %v is evaluated legal, but is illegal\n", board3)
 	}
@@ -77,7 +79,7 @@ func TestIsLegal(t *testing.T) {
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
-	sol4 := solver.MakeSolver(board4, []solver.Strategy{})
+	sol4 := solver.MakeSolver(board4, []solver.Strategy{}, log.New(io.Discard, "", 0))
 	if sol4.IsLegal() {
 		t.Fatalf("Board %v is evaluated legal, but is illegal\n", board4)
 	}
@@ -91,7 +93,7 @@ func TestIsLegal(t *testing.T) {
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{1, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
-	sol5 := solver.MakeSolver(board5, []solver.Strategy{})
+	sol5 := solver.MakeSolver(board5, []solver.Strategy{}, log.New(io.Discard, "", 0))
 	if sol5.IsLegal() {
 		t.Fatalf("Board %v is evaluated legal, but is illegal\n", board5)
 	}
@@ -107,7 +109,7 @@ func TestRestrictCands(t *testing.T) {
 		{5, 9, 7, 2, 3, 6, 1, 8, 4},
 		{4, 2, 6, 8, 1, 7, 9, 3, 5},
 		{8, 3, 1, 4, 5, 9, 2, 6, 0}}
-	sol1 := solver.MakeSolver(board1, []solver.Strategy{})
+	sol1 := solver.MakeSolver(board1, []solver.Strategy{}, log.New(io.Discard, "", 0))
 	ch1 := sol1.RestrictCands()
 	if !ch1 {
 		t.Fatalf("Restriction of %v should return true, but got false instead", board1)
@@ -125,7 +127,7 @@ func TestRestrictCands(t *testing.T) {
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
-	sol2 := solver.MakeSolver(board2, []solver.Strategy{})
+	sol2 := solver.MakeSolver(board2, []solver.Strategy{}, log.New(io.Discard, "", 0))
 	ch2 := sol2.RestrictCands()
 	if !ch2 {
 		t.Fatalf("Restriction of %v should return true, but got false instead", board2)
@@ -143,7 +145,7 @@ func TestRestrictCands(t *testing.T) {
 		{0, 0, 7, 0, 0, 0, 0, 0, 0},
 		{0, 0, 8, 0, 0, 0, 0, 0, 0},
 		{0, 0, 9, 0, 0, 0, 0, 0, 0}}
-	sol3 := solver.MakeSolver(board3, []solver.Strategy{})
+	sol3 := solver.MakeSolver(board3, []solver.Strategy{}, log.New(io.Discard, "", 0))
 	ch3 := sol3.RestrictCands()
 	if !ch3 {
 		t.Fatalf("Restriction of %v should return true, but got false instead", board3)
@@ -161,7 +163,7 @@ func TestRestrictCands(t *testing.T) {
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
-	sol4 := solver.MakeSolver(board4, []solver.Strategy{})
+	sol4 := solver.MakeSolver(board4, []solver.Strategy{}, log.New(io.Discard, "", 0))
 	ch4 := sol4.RestrictCands()
 	if ch4 {
 		t.Fatalf("Restriction of %v should return false, but got true instead", board4)
@@ -178,7 +180,7 @@ func TestEnoughCands(t *testing.T) {
 		{5, 9, 7, 2, 3, 6, 1, 8, 4},
 		{4, 2, 6, 8, 1, 7, 9, 3, 5},
 		{8, 3, 1, 4, 5, 9, 2, 6, 0}}
-	sol1 := solver.MakeSolver(board1, []solver.Strategy{})
+	sol1 := solver.MakeSolver(board1, []solver.Strategy{}, log.New(io.Discard, "", 0))
 	sol1.RestrictCands()
 	if !sol1.EnoughCands() {
 		t.Fatalf("Board %v should have enough candidates, but returned not enough", board1)
@@ -193,7 +195,7 @@ func TestEnoughCands(t *testing.T) {
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 2, 0, 0, 0, 0, 0, 0}}
-	sol2 := solver.MakeSolver(board2, []solver.Strategy{})
+	sol2 := solver.MakeSolver(board2, []solver.Strategy{}, log.New(io.Discard, "", 0))
 	sol2.RestrictCands()
 	if sol2.EnoughCands() {
 		t.Fatalf("Board %v should not have enough candidates, but returned enough", board2)
@@ -208,7 +210,7 @@ func TestEnoughCands(t *testing.T) {
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
-	sol3 := solver.MakeSolver(board3, []solver.Strategy{})
+	sol3 := solver.MakeSolver(board3, []solver.Strategy{}, log.New(io.Discard, "", 0))
 	sol3.RestrictCands()
 	if sol3.EnoughCands() {
 		t.Fatalf("Board %v should not have enough candidates, but returned enough", board3)
@@ -223,7 +225,7 @@ func TestEnoughCands(t *testing.T) {
 		{0, 0, 0, 0, 7, 0, 0, 0, 0},
 		{0, 0, 0, 0, 8, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 9}}
-	sol4 := solver.MakeSolver(board4, []solver.Strategy{})
+	sol4 := solver.MakeSolver(board4, []solver.Strategy{}, log.New(io.Discard, "", 0))
 	sol4.RestrictCands()
 	if sol4.EnoughCands() {
 		t.Fatalf("Board %v should not have enough candidates, but returned enough", board4)
@@ -240,7 +242,7 @@ func TestNakedSingles(t *testing.T) {
 		{5, 9, 7, 2, 3, 6, 1, 8, 4},
 		{4, 2, 6, 8, 1, 7, 9, 3, 5},
 		{8, 3, 1, 4, 5, 9, 2, 6, 0}}
-	sol1 := solver.MakeSolver(board1, []solver.Strategy{})
+	sol1 := solver.MakeSolver(board1, []solver.Strategy{}, log.New(io.Discard, "", 0))
 	ch1a := sol1.NakedSingles()
 	if ch1a {
 		t.Fatalf("Naked singles on %v should return false before restriction, but got true", board1)
@@ -265,7 +267,7 @@ func TestIsSolved(t *testing.T) {
 		{5, 9, 7, 2, 3, 6, 1, 8, 4},
 		{4, 2, 6, 8, 1, 7, 9, 3, 5},
 		{8, 3, 1, 4, 5, 9, 2, 6, 0}}
-	sol1 := solver.MakeSolver(board1, []solver.Strategy{})
+	sol1 := solver.MakeSolver(board1, []solver.Strategy{}, log.New(io.Discard, "", 0))
 	if sol1.IsSolved() {
 		t.Fatalf("Board %v should return not solved, but got solved instead", board1)
 	}

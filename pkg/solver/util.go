@@ -3,6 +3,7 @@ package solver
 
 import (
 	"golang.org/x/exp/slices"
+	"log"
 )
 
 // Strategy is the prototype for implementing Sudoku solving strategies.
@@ -13,18 +14,19 @@ type Strategy func([][][]uint8) bool
 
 // Solver is the primary type for all functions.
 // It consists of a collection of strategies to be used,
-// the current fixed-state board (0=empty) and a list ofboard candidates.
+// the current fixed-state board (0=empty), a list ofboard candidates and a logger.
 // The strategies will be called one at a time until one changes something,
 // then the solver will start from the beginning.
 type Solver struct {
 	Strats []Strategy
 	Board  [][]uint8
 	Cands  [][][]uint8
+	Logger *log.Logger
 }
 
 // MakeSolver takes a board (0s used for empty cells) and a list of strategies and creates
 // a new solver.
-func MakeSolver(board [][]uint8, strats []Strategy) *Solver {
+func MakeSolver(board [][]uint8, strats []Strategy, logger *log.Logger) *Solver {
 	cands := makeCandidates(board)
 	boardCopy := make([][]uint8, 9)
 	for i := 0; i < 9; i++ {
@@ -41,6 +43,7 @@ func MakeSolver(board [][]uint8, strats []Strategy) *Solver {
 		Strats: stratsCopy,
 		Board:  boardCopy,
 		Cands:  cands,
+		Logger: logger,
 	}
 	return &sol
 }

@@ -4,6 +4,8 @@ package util
 
 import (
 	"fmt"
+	"io"
+	"log"
 
 	"github.com/deroshkin/sudoku/pkg/solver"
 	"golang.org/x/exp/slices"
@@ -26,7 +28,7 @@ type Cell struct {
 //	    t.Fatalf(msg)
 //	}
 func SolveTester(board, answer [][]uint8, strats []solver.Strategy, solvable bool) (bool, string) {
-	sol := solver.MakeSolver(board, strats)
+	sol := solver.MakeSolver(board, strats, log.New(io.Discard, "", 0))
 	solved := sol.Solve()
 	if !solvable && solved {
 		return false, fmt.Sprintf("Board %v should not be solvable using the provided strategies, but was solved", board)
@@ -60,7 +62,7 @@ func SolveTester(board, answer [][]uint8, strats []solver.Strategy, solvable boo
 //	}
 func CandTester(board [][]uint8, strat solver.Strategy, expected bool,
 	equal map[Cell][]uint8, contains map[Cell][]uint8, dnc map[Cell][]uint8) (bool, string) {
-	sol := solver.MakeSolver(board, []solver.Strategy{})
+	sol := solver.MakeSolver(board, []solver.Strategy{}, log.New(io.Discard, "", 0))
 	sol.RestrictCands()
 
 	change := strat(sol.Cands)
