@@ -9,7 +9,7 @@ import (
 )
 
 func TestPointingSets(t *testing.T) {
-	// Pointing pair of 2s in row 1
+	// Pointing pair of 2s box 6 -> row 1
 	board1 := [][]uint8{{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 4, 1, 0},
 		{0, 0, 0, 0, 0, 0, 7, 8, 0},
@@ -29,7 +29,7 @@ func TestPointingSets(t *testing.T) {
 		t.Fatalf(msg1)
 	}
 
-	// Pointing pair of 7s in column 3
+	// Pointing pair of 7s box 4 -> column 3
 	board2 := [][]uint8{{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -49,7 +49,7 @@ func TestPointingSets(t *testing.T) {
 		t.Fatalf(msg2)
 	}
 
-	//Pointing triple of 4s in row 5
+	//Pointing triple of 4s box 5 -> row 5
 	board3 := [][]uint8{{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -69,7 +69,7 @@ func TestPointingSets(t *testing.T) {
 		t.Fatalf(msg3)
 	}
 
-	//Pointing triple of 8s in column 1
+	//Pointing triple of 8s box 1 -> column 1
 	board4 := [][]uint8{{0, 1, 0, 0, 0, 0, 0, 0, 0},
 		{0, 2, 0, 0, 0, 0, 0, 0, 0},
 		{0, 5, 0, 0, 0, 0, 0, 0, 0},
@@ -89,7 +89,7 @@ func TestPointingSets(t *testing.T) {
 		t.Fatalf(msg4)
 	}
 
-	//Non-example
+	// No pointing sets
 	board5 := [][]uint8{{0, 1, 4, 0, 0, 0, 0, 0, 0},
 		{0, 2, 6, 0, 0, 0, 0, 0, 0},
 		{0, 5, 0, 0, 0, 0, 0, 0, 0},
@@ -106,6 +106,76 @@ func TestPointingSets(t *testing.T) {
 	)
 	if !res5 {
 		t.Fatalf(msg5)
+	}
+}
+
+func TestPointingSetsLog(t *testing.T) {
+	// Pointing pair of 2s box 3 -> row 1
+	board1 := [][]uint8{{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 4, 1, 0},
+		{0, 0, 0, 0, 0, 0, 7, 8, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 2},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	res1, msg1 := util.LogTester(board1, []solver.Strategy{}, interstrats.PointingSets,
+		"2 in box 3 is restricted to row 1, removing from all other cells in the row\n",
+	)
+	if !res1 {
+		t.Fatalf(msg1)
+	}
+
+	// Pointing pair of 7s box 4 -> column 3
+	board2 := [][]uint8{{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 7, 0, 0},
+		{1, 2, 0, 0, 0, 0, 0, 0, 0},
+		{5, 4, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	res2, msg2 := util.LogTester(board2, []solver.Strategy{}, interstrats.PointingSets,
+		"7 in box 4 is restricted to column 3, removing from all other cells in the column\n",
+	)
+	if !res2 {
+		t.Fatalf(msg2)
+	}
+
+	//Pointing triple of 4s box 5 -> row 5
+	board3 := [][]uint8{{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 4, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 1, 2, 3, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	res3, msg3 := util.LogTester(board3, []solver.Strategy{}, interstrats.PointingSets,
+		"4 in box 5 is restricted to row 5, removing from all other cells in the row\n",
+	)
+	if !res3 {
+		t.Fatalf(msg3)
+	}
+
+	//Pointing triple of 8s box 1 -> column 1
+	board4 := [][]uint8{{0, 1, 0, 0, 0, 0, 0, 0, 0},
+		{0, 2, 0, 0, 0, 0, 0, 0, 0},
+		{0, 5, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 8, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	res4, msg4 := util.LogTester(board4, []solver.Strategy{}, interstrats.PointingSets,
+		"8 in box 1 is restricted to column 1, removing from all other cells in the column\n",
+	)
+	if !res4 {
+		t.Fatalf(msg4)
 	}
 }
 
@@ -179,7 +249,7 @@ func TestBoxLineReduction(t *testing.T) {
 		t.Fatalf(msg2)
 	}
 
-	//Non-example
+	// Non-example
 	board3 := [][]uint8{{0, 1, 4, 0, 0, 0, 0, 0, 0},
 		{0, 2, 6, 0, 0, 0, 0, 0, 0},
 		{0, 5, 0, 0, 0, 0, 0, 0, 0},
@@ -196,5 +266,41 @@ func TestBoxLineReduction(t *testing.T) {
 	)
 	if !res3 {
 		t.Fatalf(msg3)
+	}
+}
+
+func TestBoxLineReductionLog(t *testing.T) {
+	// 1s in row 2 limited to box 1
+	board1 := [][]uint8{{0, 0, 0, 0, 0, 0, 1, 0, 0},
+		{0, 0, 0, 2, 3, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 1, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	res1, msg1 := util.LogTester(board1, []solver.Strategy{}, interstrats.BoxLineReduction,
+		"1 in row 2 is restricted to box 1, removing from all other cells in the box\n",
+	)
+	if !res1 {
+		t.Fatalf(msg1)
+	}
+
+	// 3s in col 4 limited to box 5
+	board2 := [][]uint8{{0, 0, 0, 0, 0, 3, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{3, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 2, 0, 0, 0, 0, 0},
+		{0, 0, 0, 5, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 3, 0, 0}}
+	res2, msg2 := util.LogTester(board2, []solver.Strategy{}, interstrats.BoxLineReduction,
+		"3 in column 4 is restricted to box 5, removing from all other cells in the box\n",
+	)
+	if !res2 {
+		t.Fatalf(msg2)
 	}
 }
