@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/deroshkin/sudoku/pkg/solver"
 )
@@ -18,7 +19,7 @@ func main() {
 		{4, 6, 2, 0, 0, 0, 0, 7, 1},
 		{0, 0, 9, 2, 7, 8, 0, 4, 0}}
 
-	sol := solver.MakeSolver(board, []solver.Strategy{})
+	sol := solver.MakeSolver(board, []solver.Strategy{}, log.Default())
 	sol.Solve()
 	for _, row := range sol.Board {
 		fmt.Println(row)
