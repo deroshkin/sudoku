@@ -48,6 +48,7 @@ func pointers(sol *solver.Solver, box uint8) (changed bool) {
 			}
 		}
 		if changed {
+			sol.Logger.Printf("%v in box %v is restricted to row %v, removing from all other cells in the row\n", v, box, digitRows[v][0]+1)
 			return
 		}
 		if len(digitCols[v]) == 1 {
@@ -60,6 +61,7 @@ func pointers(sol *solver.Solver, box uint8) (changed bool) {
 			}
 		}
 		if changed {
+			sol.Logger.Printf("%v in box %v is restricted to column %v, removing from all other cells in the column\n", v, box, digitCols[v][0]+1)
 			return
 		}
 	}

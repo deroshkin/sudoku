@@ -4,6 +4,8 @@ package nhstrats
 
 import "golang.org/x/exp/slices"
 
+var tuple_names = map[int]string{2: "pair", 3: "triple", 4: "quad"}
+
 // restrict restricts a map {j: values at j} or {v: locations for v} to only those elements
 // that appear more than once and at most k<=4 times
 func restrict(vals map[uint8][]uint8, k int) (res map[uint8][]uint8) {

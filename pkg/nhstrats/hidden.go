@@ -43,6 +43,7 @@ func hiddenRowkTuple(sol *solver.Solver, k int) (changed bool) {
 		locs = restrict(locs, k)
 		matches := findMatches(locs, k, 0)
 		for _, setVals := range matches {
+			cells := []uint8{}
 			for j := uint8(0); j < 9; j++ {
 				isPart := false
 				isFull := true
@@ -59,8 +60,16 @@ func hiddenRowkTuple(sol *solver.Solver, k int) (changed bool) {
 					sol.Cands[i][j] = intersect
 					changed = true
 				}
+				if isPart {
+					cells = append(cells, j)
+				}
 			}
 			if changed {
+				sol.Logger.Printf("Found a hidden %v %v in column %v ( ", tuple_names[k], setVals, i+1)
+				for _, j := range cells {
+					sol.Logger.Printf("r%vc%v ", i+1, j+1)
+				}
+				sol.Logger.Printf(") removing other values from these cells\n")
 				return
 			}
 		}
@@ -82,6 +91,7 @@ func hiddenColkTuple(sol *solver.Solver, k int) (changed bool) {
 		locs = restrict(locs, k)
 		matches := findMatches(locs, k, 0)
 		for _, setVals := range matches {
+			cells := []uint8{}
 			for j := uint8(0); j < 9; j++ {
 				isPart := false
 				isFull := true
@@ -98,8 +108,16 @@ func hiddenColkTuple(sol *solver.Solver, k int) (changed bool) {
 					sol.Cands[j][i] = intersect
 					changed = true
 				}
+				if isPart {
+					cells = append(cells, j)
+				}
 			}
 			if changed {
+				sol.Logger.Printf("Found a hidden %v %v in column %v ( ", tuple_names[k], setVals, i+1)
+				for _, j := range cells {
+					sol.Logger.Printf("r%vc%v ", j+1, i+1)
+				}
+				sol.Logger.Printf(") removing other values from these cells\n")
 				return
 			}
 		}
@@ -121,6 +139,7 @@ func hiddenBoxkTuple(sol *solver.Solver, k int) (changed bool) {
 		locs = restrict(locs, k)
 		matches := findMatches(locs, k, 0)
 		for _, setVals := range matches {
+			cells := []uint8{}
 			for j := uint8(0); j < 9; j++ {
 				isPart := false
 				isFull := true
@@ -137,8 +156,16 @@ func hiddenBoxkTuple(sol *solver.Solver, k int) (changed bool) {
 					sol.Cands[3*(i/3)+(j/3)][3*(i%3)+(j%3)] = intersect
 					changed = true
 				}
+				if isPart {
+					cells = append(cells, j)
+				}
 			}
 			if changed {
+				sol.Logger.Printf("Found a hidden %v %v in box %v ( ", tuple_names[k], setVals, i+1)
+				for _, j := range cells {
+					sol.Logger.Printf("r%vc%v ", 3*(i/3)+(j/3)+1, 3*(i%3)+(j%3)+1)
+				}
+				sol.Logger.Printf(") removing other values from these cells\n")
 				return
 			}
 		}

@@ -34,12 +34,21 @@ func (sol *Solver) RestrictCands() (change bool) {
 // candidate value remaining.
 func (sol *Solver) NakedSingles() (change bool) {
 	change = false
+	singles := [][]int{}
 	for i := 0; i < 9; i++ {
 		for j := 0; j < 9; j++ {
 			if sol.Board[i][j] == 0 && len(sol.Cands[i][j]) == 1 {
 				sol.Board[i][j] = sol.Cands[i][j][0]
 				change = true
+				singles = append(singles, []int{i, j})
 			}
+		}
+	}
+	if change {
+		for _, pt := range singles {
+			i := pt[0]
+			j := pt[1]
+			sol.Logger.Printf("Found a naked single %v in r%vc%v\n", sol.Board[i][j], i+1, j+1)
 		}
 	}
 	return

@@ -27,7 +27,8 @@ func hiddenRowSingles(sol *solver.Solver) (changed bool) {
 		for v := uint8(1); v <= 9; v++ {
 			if len(vals[v]) == 1 {
 				sol.Cands[i][vals[v][0]] = []uint8{v}
-				return true
+				sol.Logger.Printf("Found a hidden single %v in row %v: r%vc%v, removing all other candidates from the cell\n", v, i+1, i+1, vals[v][0]+1)
+				changed = true
 			}
 		}
 	}
@@ -50,7 +51,8 @@ func hiddenColSingles(sol *solver.Solver) (changed bool) {
 		for v := uint8(1); v <= 9; v++ {
 			if len(vals[v]) == 1 {
 				sol.Cands[vals[v][0]][i] = []uint8{v}
-				return true
+				sol.Logger.Printf("Found a hidden single %v in column %v: r%vc%v, removing all other candidates from the cell\n", v, i+1, vals[v][0]+1, i+1)
+				changed = true
 			}
 		}
 	}
@@ -74,7 +76,8 @@ func hiddenBoxSingles(sol *solver.Solver) (changed bool) {
 			if len(vals[v]) == 1 {
 				j := vals[v][0]
 				sol.Cands[3*(i/3)+(j/3)][3*(i%3)+(j%3)] = []uint8{v}
-				return true
+				sol.Logger.Printf("Found a hidden single %v in box %v: r%vc%v, removing all other candidates from the cell\n", v, i+1, 3*(i/3)+(j/3)+1, 3*(i%3)+(j%3)+1)
+				changed = true
 			}
 		}
 	}

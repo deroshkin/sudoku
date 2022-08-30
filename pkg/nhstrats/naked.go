@@ -60,6 +60,11 @@ func nakedRowkTuples(sol *solver.Solver, k int) (changed bool) {
 				}
 			}
 			if changed {
+				sol.Logger.Printf("Found a naked %v %v in row %v ( ", tuple_names[k], set, i+1)
+				for _, j := range setCells {
+					sol.Logger.Printf("r%vc%v ", i+1, j+1)
+				}
+				sol.Logger.Printf("), removing the values from other cells in the row\n")
 				return
 			}
 		}

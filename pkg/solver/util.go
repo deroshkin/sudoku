@@ -74,16 +74,19 @@ func (sol *Solver) IsLegal() bool {
 		box := 0
 		for j := 0; j < 9; j++ {
 			if sol.Board[i][j] != 0 && row&(1<<sol.Board[i][j]) != 0 {
+				sol.Logger.Printf("Multiple occurrences of %v in row %v\n", sol.Board[i][j], i+1)
 				return false
 			} else {
 				row |= 1 << sol.Board[i][j]
 			}
 			if sol.Board[j][i] != 0 && col&(1<<sol.Board[j][i]) != 0 {
+				sol.Logger.Printf("Multiple occurrences of %v in column %v\n", sol.Board[j][i], j+1)
 				return false
 			} else {
 				col |= 1 << sol.Board[j][i]
 			}
 			if sol.Board[3*(i/3)+j/3][3*(i%3)+j%3] != 0 && box&(1<<sol.Board[3*(i/3)+j/3][3*(i%3)+j%3]) != 0 {
+				sol.Logger.Printf("Multiple occurrences of %v in box %v\n", sol.Board[3*(i/3)+j/3][3*(i%3)+j%3], i+1)
 				return false
 			} else {
 				box |= 1 << sol.Board[3*(i/3)+j/3][3*(i%3)+j%3]
@@ -125,7 +128,34 @@ func (sol *Solver) EnoughCands() bool {
 				box |= 1 << (v - 1)
 			}
 		}
-		if row < 511 || col < 511 || box < 511 {
+		if row < 511 {
+			sol.Logger.Printf("Unable to place ")
+			for j := 0; j < 9; j++ {
+				if row&(1<<j) == 0 {
+					sol.Logger.Printf("%v ", j+1)
+				}
+			}
+			sol.Logger.Printf("in row %v\n", i+1)
+			return false
+		}
+		if col < 511 {
+			sol.Logger.Printf("Unable to place ")
+			for j := 0; j < 9; j++ {
+				if row&(1<<j) == 0 {
+					sol.Logger.Printf("%v ", j+1)
+				}
+			}
+			sol.Logger.Printf("in column %v\n", i+1)
+			return false
+		}
+		if box < 511 {
+			sol.Logger.Printf("Unable to place ")
+			for j := 0; j < 9; j++ {
+				if row&(1<<j) == 0 {
+					sol.Logger.Printf("%v ", j+1)
+				}
+			}
+			sol.Logger.Printf("in box %v\n", i+1)
 			return false
 		}
 	}

@@ -41,6 +41,7 @@ func boxRowReduction(sol *solver.Solver, row uint8) (changed bool) {
 			}
 		}
 		if changed {
+			sol.Logger.Printf("%v in row %v is restricted to box %v, removing from all other cells in the box\n", v, row, digitBoxes[v][0]+1)
 			return
 		}
 	}
@@ -70,6 +71,7 @@ func boxColReduction(sol *solver.Solver, col uint8) (changed bool) {
 			}
 		}
 		if changed {
+			sol.Logger.Printf("%v in column %v is restricted to box %v, removing from all other cells in the box\n", v, col, digitBoxes[v][0]+1)
 			return
 		}
 	}
