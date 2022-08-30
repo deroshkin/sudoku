@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"strings"
 
 	"github.com/deroshkin/sudoku/pkg/solver"
 	"golang.org/x/exp/slices"
@@ -95,4 +96,35 @@ func CandTester(board [][]uint8, strat solver.Strategy, expected bool,
 		}
 	}
 	return true, "Test successful"
+}
+
+// LogTester is a utility function to ensure that strategies produce expected logs.
+// As input, it takes the initial board, an ordered list of strategies to run before the test,
+// the strategy being tested and the expected message.
+// If the test is successful, returns (true, "Test successful"), otherwise, (false, error_message).
+// The expected use is:
+// res, msg = LogTester(...)
+//
+//	if !res {
+//		    t.Fatalf(msg)
+//	}
+func LogTester(board [][]uint8, preTest []solver.Strategy, testStrat solver.Strategy, msg string) (bool, string) {
+	sol := solver.MakeSolver(board, []solver.Strategy{}, log.New(io.Discard, "", 0))
+	for _, strat := range preTest {
+		for sol.NakedSingles() || sol.RestrictCands() {
+		}
+		strat(sol)
+	}
+	for sol.NakedSingles() || sol.RestrictCands() {
+	}
+
+	var builder strings.Builder
+	sol.Logger = log.New(&builder, "", 0)
+	testStrat(sol)
+
+	if builder.String() == msg {
+		return true, "Test successful"
+	} else {
+		return false, fmt.Sprintf("Expected message \"%v\", but got \"%v\"\n", msg, builder.String())
+	}
 }

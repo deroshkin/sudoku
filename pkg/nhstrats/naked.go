@@ -42,7 +42,8 @@ func nakedRowkTuples(sol *solver.Solver, k int) (changed bool) {
 		vals = restrict(vals, k)
 		matches := findMatches(vals, k, 1)
 		for _, setCells := range matches {
-			set := make([]uint8, 9)
+			slices.Sort(setCells)
+			set := []uint8{}
 			for _, j := range setCells {
 				for _, v := range sol.Cands[i][j] {
 					if !slices.Contains(set, v) {
@@ -60,6 +61,7 @@ func nakedRowkTuples(sol *solver.Solver, k int) (changed bool) {
 				}
 			}
 			if changed {
+				slices.Sort(set)
 				sol.Logger.Printf("Found a naked %v %v in row %v ( ", tuple_names[k], set, i+1)
 				for _, j := range setCells {
 					sol.Logger.Printf("r%vc%v ", i+1, j+1)
@@ -82,7 +84,8 @@ func nakedColkTuples(sol *solver.Solver, k int) (changed bool) {
 		vals = restrict(vals, k)
 		matches := findMatches(vals, k, 1)
 		for _, setCells := range matches {
-			set := make([]uint8, 9)
+			slices.Sort(setCells)
+			set := []uint8{}
 			for _, j := range setCells {
 				for _, v := range sol.Cands[j][i] {
 					if !slices.Contains(set, v) {
@@ -100,6 +103,12 @@ func nakedColkTuples(sol *solver.Solver, k int) (changed bool) {
 				}
 			}
 			if changed {
+				slices.Sort(set)
+				sol.Logger.Printf("Found a naked %v %v in column %v ( ", tuple_names[k], set, i+1)
+				for _, j := range setCells {
+					sol.Logger.Printf("r%vc%v ", j+1, i+1)
+				}
+				sol.Logger.Printf("), removing the values from other cells in the column\n")
 				return
 			}
 		}
@@ -117,7 +126,8 @@ func nakedBoxkTuples(sol *solver.Solver, k int) (changed bool) {
 		vals = restrict(vals, k)
 		matches := findMatches(vals, k, 1)
 		for _, setCells := range matches {
-			set := make([]uint8, 9)
+			slices.Sort(setCells)
+			set := []uint8{}
 			for _, j := range setCells {
 				for _, v := range sol.Cands[3*(i/3)+(j/3)][3*(i%3)+(j%3)] {
 					if !slices.Contains(set, v) {
@@ -135,6 +145,12 @@ func nakedBoxkTuples(sol *solver.Solver, k int) (changed bool) {
 				}
 			}
 			if changed {
+				slices.Sort(set)
+				sol.Logger.Printf("Found a naked %v %v in box %v ( ", tuple_names[k], set, i+1)
+				for _, j := range setCells {
+					sol.Logger.Printf("r%vc%v ", 3*(i/3)+(j/3)+1, 3*(i%3)+(j%3)+1)
+				}
+				sol.Logger.Printf("), removing the values from other cells in the box\n")
 				return
 			}
 		}

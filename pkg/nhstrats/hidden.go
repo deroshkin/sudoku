@@ -43,6 +43,7 @@ func hiddenRowkTuple(sol *solver.Solver, k int) (changed bool) {
 		locs = restrict(locs, k)
 		matches := findMatches(locs, k, 0)
 		for _, setVals := range matches {
+			slices.Sort(setVals)
 			cells := []uint8{}
 			for j := uint8(0); j < 9; j++ {
 				isPart := false
@@ -65,7 +66,7 @@ func hiddenRowkTuple(sol *solver.Solver, k int) (changed bool) {
 				}
 			}
 			if changed {
-				sol.Logger.Printf("Found a hidden %v %v in column %v ( ", tuple_names[k], setVals, i+1)
+				sol.Logger.Printf("Found a hidden %v %v in row %v ( ", tuple_names[k], setVals, i+1)
 				for _, j := range cells {
 					sol.Logger.Printf("r%vc%v ", i+1, j+1)
 				}
@@ -91,6 +92,7 @@ func hiddenColkTuple(sol *solver.Solver, k int) (changed bool) {
 		locs = restrict(locs, k)
 		matches := findMatches(locs, k, 0)
 		for _, setVals := range matches {
+			slices.Sort(setVals)
 			cells := []uint8{}
 			for j := uint8(0); j < 9; j++ {
 				isPart := false
@@ -139,6 +141,7 @@ func hiddenBoxkTuple(sol *solver.Solver, k int) (changed bool) {
 		locs = restrict(locs, k)
 		matches := findMatches(locs, k, 0)
 		for _, setVals := range matches {
+			slices.Sort(setVals)
 			cells := []uint8{}
 			for j := uint8(0); j < 9; j++ {
 				isPart := false
