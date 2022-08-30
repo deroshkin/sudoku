@@ -9,8 +9,8 @@ import (
 // As soon as one is found, returns true. If none are found, returns false.
 // Note: A naked pair occurs when two cells that see each other can each have only two values,
 // which allows us to remove those two values from the rest of the row/column/box.
-func NakedPairs(cands [][][]uint8) (changed bool) {
-	return nakedRowkTuples(cands, 2) || nakedColkTuples(cands, 2) || nakedBoxkTuples(cands, 2)
+func NakedPairs(sol *solver.Solver) (changed bool) {
+	return nakedRowkTuples(sol, 2) || nakedColkTuples(sol, 2) || nakedBoxkTuples(sol, 2)
 }
 
 // NakedTriples is a strategy that searches for naked triples in rows, columns and boxes (in that order).
@@ -19,8 +19,8 @@ func NakedPairs(cands [][][]uint8) (changed bool) {
 // which allows us to remove those three values from the rest of the row/column/box.
 // Unlike naked pairs, the three cells need not have the same candidates (e.g. we can have cells with candidates
 // 12, 13, and 23, and that would still be a valid 123 naked triple).
-func NakedTriples(cands [][][]uint8) (changed bool) {
-	return nakedRowkTuples(cands, 3) || nakedColkTuples(cands, 3) || nakedBoxkTuples(cands, 3)
+func NakedTriples(sol *solver.Solver) (changed bool) {
+	return nakedRowkTuples(sol, 3) || nakedColkTuples(sol, 3) || nakedBoxkTuples(sol, 3)
 }
 
 // NakedQuads is a strategy that searches for naked quadruples in rows, columns and boxes (in that order).
@@ -28,23 +28,23 @@ func NakedTriples(cands [][][]uint8) (changed bool) {
 // Note: A naked quadruple occurs when four cells that see each other can each have (some of) only four values,
 // which allows us to remove those three values from the rest of the row/column/box.
 // Similar to naked triples, the four cells need not have the same candidates.
-func NakedQuads(cands [][][]uint8) (changed bool) {
-	return nakedRowkTuples(cands, 4) || nakedColkTuples(cands, 4) || nakedBoxkTuples(cands, 4)
+func NakedQuads(sol *solver.Solver) (changed bool) {
+	return nakedRowkTuples(sol, 4) || nakedColkTuples(sol, 4) || nakedBoxkTuples(sol, 4)
 }
 
 // nakedRowkTuples finds naked k-tuples in rows, returns whether any changes are made
-func nakedRowkTuples(cands [][][]uint8, k int) (changed bool) {
+func nakedRowkTuples(sol *solver.Solver, k int) (changed bool) {
 	for i := uint8(0); i < 9; i++ {
 		vals := map[uint8][]uint8{}
 		for j := uint8(0); j < 9; j++ {
-			vals[j] = cands[i][j]
+			vals[j] = sol.Cands[i][j]
 		}
 		vals = restrict(vals, k)
 		matches := findMatches(vals, k, 1)
 		for _, setCells := range matches {
 			set := make([]uint8, 9)
 			for _, j := range setCells {
-				for _, v := range cands[i][j] {
+				for _, v := range sol.Cands[i][j] {
 					if !slices.Contains(set, v) {
 						set = append(set, v)
 					}
@@ -53,7 +53,7 @@ func nakedRowkTuples(cands [][][]uint8, k int) (changed bool) {
 			for j := uint8(0); j < 9; j++ {
 				if !slices.Contains(setCells, j) {
 					for _, v := range set {
-						if solver.RemoveCand(cands, int(i), int(j), v) {
+						if solver.RemoveCand(sol.Cands, int(i), int(j), v) {
 							changed = true
 						}
 					}
@@ -68,18 +68,18 @@ func nakedRowkTuples(cands [][][]uint8, k int) (changed bool) {
 }
 
 // nakedColkTuples finds naked k-tuples in columns, returns whether any changes are made
-func nakedColkTuples(cands [][][]uint8, k int) (changed bool) {
+func nakedColkTuples(sol *solver.Solver, k int) (changed bool) {
 	for i := uint8(0); i < 9; i++ {
 		vals := map[uint8][]uint8{}
 		for j := uint8(0); j < 9; j++ {
-			vals[j] = cands[j][i]
+			vals[j] = sol.Cands[j][i]
 		}
 		vals = restrict(vals, k)
 		matches := findMatches(vals, k, 1)
 		for _, setCells := range matches {
 			set := make([]uint8, 9)
 			for _, j := range setCells {
-				for _, v := range cands[j][i] {
+				for _, v := range sol.Cands[j][i] {
 					if !slices.Contains(set, v) {
 						set = append(set, v)
 					}
@@ -88,7 +88,7 @@ func nakedColkTuples(cands [][][]uint8, k int) (changed bool) {
 			for j := uint8(0); j < 9; j++ {
 				if !slices.Contains(setCells, j) {
 					for _, v := range set {
-						if solver.RemoveCand(cands, int(j), int(i), v) {
+						if solver.RemoveCand(sol.Cands, int(j), int(i), v) {
 							changed = true
 						}
 					}
@@ -103,18 +103,18 @@ func nakedColkTuples(cands [][][]uint8, k int) (changed bool) {
 }
 
 // nakedBoxkTuples finds naked k-tuples in boxes, returns whether any changes are made
-func nakedBoxkTuples(cands [][][]uint8, k int) (changed bool) {
+func nakedBoxkTuples(sol *solver.Solver, k int) (changed bool) {
 	for i := uint8(0); i < 9; i++ {
 		vals := map[uint8][]uint8{}
 		for j := uint8(0); j < 9; j++ {
-			vals[j] = cands[3*(i/3)+(j/3)][3*(i%3)+(j%3)]
+			vals[j] = sol.Cands[3*(i/3)+(j/3)][3*(i%3)+(j%3)]
 		}
 		vals = restrict(vals, k)
 		matches := findMatches(vals, k, 1)
 		for _, setCells := range matches {
 			set := make([]uint8, 9)
 			for _, j := range setCells {
-				for _, v := range cands[3*(i/3)+(j/3)][3*(i%3)+(j%3)] {
+				for _, v := range sol.Cands[3*(i/3)+(j/3)][3*(i%3)+(j%3)] {
 					if !slices.Contains(set, v) {
 						set = append(set, v)
 					}
@@ -123,7 +123,7 @@ func nakedBoxkTuples(cands [][][]uint8, k int) (changed bool) {
 			for j := uint8(0); j < 9; j++ {
 				if !slices.Contains(setCells, j) {
 					for _, v := range set {
-						if solver.RemoveCand(cands, int(3*(i/3)+(j/3)), int(3*(i%3)+(j%3)), v) {
+						if solver.RemoveCand(sol.Cands, int(3*(i/3)+(j/3)), int(3*(i%3)+(j%3)), v) {
 							changed = true
 						}
 					}

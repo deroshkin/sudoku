@@ -7,10 +7,10 @@ import (
 )
 
 // Strategy is the prototype for implementing Sudoku solving strategies.
-// As the input, each strategy receives the candidates of the solver object.
+// As the input, each strategy receives a solver object.
 // It is expected to perform any changes in place and return a single boolean
 // indicating whether or not any changes have occurred.
-type Strategy func([][][]uint8) bool
+type Strategy func(*Solver) bool
 
 // Solver is the primary type for all functions.
 // It consists of a collection of strategies to be used,

@@ -13,21 +13,21 @@ import (
 // Note: A pointing pair/triple occurs when all candidates for where to place a digit in a given box
 // occur in the same row or in the same column.
 // In that case, we can remove the digit from the rest of the row/column.
-func PointingSets(cands [][][]uint8) (changed bool) {
+func PointingSets(sol *solver.Solver) (changed bool) {
 	for box := uint8(0); box < 9; box++ {
-		if pointers(cands, box) {
+		if pointers(sol, box) {
 			return true
 		}
 	}
 	return
 }
 
-func pointers(cands [][][]uint8, box uint8) (changed bool) {
+func pointers(sol *solver.Solver, box uint8) (changed bool) {
 	digitRows := map[uint8][]uint8{1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {}}
 	digitCols := map[uint8][]uint8{1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {}}
 	for i := uint8(0); i < 9; i++ {
-		if len(cands[3*(box/3)+(i/3)][3*(box%3)+(i%3)]) > 1 {
-			for _, v := range cands[3*(box/3)+(i/3)][3*(box%3)+(i%3)] {
+		if len(sol.Cands[3*(box/3)+(i/3)][3*(box%3)+(i%3)]) > 1 {
+			for _, v := range sol.Cands[3*(box/3)+(i/3)][3*(box%3)+(i%3)] {
 				if !slices.Contains(digitRows[v], 3*(box/3)+(i/3)) {
 					digitRows[v] = append(digitRows[v], 3*(box/3)+(i/3))
 				}
@@ -42,7 +42,7 @@ func pointers(cands [][][]uint8, box uint8) (changed bool) {
 			i := digitRows[v][0]
 			for j := uint8(0); j < 9; j++ {
 				if 3*(i/3)+(j/3) != box {
-					change := solver.RemoveCand(cands, int(i), int(j), v)
+					change := solver.RemoveCand(sol.Cands, int(i), int(j), v)
 					changed = changed || change
 				}
 			}
@@ -54,7 +54,7 @@ func pointers(cands [][][]uint8, box uint8) (changed bool) {
 			i := digitCols[v][0]
 			for j := uint8(0); j < 9; j++ {
 				if 3*(j/3)+(i/3) != box {
-					change := solver.RemoveCand(cands, int(j), int(i), v)
+					change := solver.RemoveCand(sol.Cands, int(j), int(i), v)
 					changed = changed || change
 				}
 			}

@@ -65,7 +65,7 @@ func CandTester(board [][]uint8, strat solver.Strategy, expected bool,
 	sol := solver.MakeSolver(board, []solver.Strategy{}, log.New(io.Discard, "", 0))
 	sol.RestrictCands()
 
-	change := strat(sol.Cands)
+	change := strat(sol)
 	if !expected && change {
 		return false, fmt.Sprintf("Strategy %v made changes when none were expected", strat)
 	} else if expected && !change {

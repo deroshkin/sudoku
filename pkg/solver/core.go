@@ -67,7 +67,7 @@ func (sol *Solver) Solve() bool {
 			}
 		}
 		for _, strat := range sol.Strats {
-			if strat(sol.Cands) {
+			if strat(sol) {
 				changed = true
 				break
 			}
