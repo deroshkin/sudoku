@@ -1,0 +1,3 @@
+This is a simple logical sudoku solver, which I started as a way to get more practice with Go.
+
+After learning more Go, I've decided to re-write this from scratch to make it extensible and to clean it up.
